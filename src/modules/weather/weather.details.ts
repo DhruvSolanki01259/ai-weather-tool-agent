@@ -1,28 +1,33 @@
+import { extractCities } from "@/utils/extractCitites";
+import { extractDate } from "@/utils/extractDate";
+
 interface DataObj {
-  city: string;
-  date: string;
+  city: string[];
+  date?: string; // string | undefined
   next_days_from_curr: number;
 }
 
-export const getWeatherDetails = (query: string) => {
-  const requiredData: DataObj = {
-    city: "",
-    date: "",
-    next_days_from_curr: 0,
+export const getWeatherDetails = (query: string): DataObj => {
+  const cities = extractCities(query);
+  const date = extractDate(query) || undefined;
+
+  let next_days_from_curr = 0;
+
+  if (date) {
+    const today = new Date();
+    const targetDate = new Date(date);
+
+    today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const diffInMs = targetDate.getTime() - today.getTime();
+
+    next_days_from_curr = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  }
+
+  return {
+    city: cities,
+    date,
+    next_days_from_curr,
   };
-
-  // Forecast -> Furture
-  // const ForecastURL = `https://api.weatherapi.com/v1${WeatherAPICalls.forecast.endpoint}?key=${API_KEY}&q=${city}&days=${futureDays}`;
-
-  // Current --> Present
-  // const CurrentURL = `https://api.weatherapi.com/v1${WeatherAPICalls.current.endpoint}?key=${API_KEY}&q=${city}`;
-
-  // History --> Past
-  // const HistoryURL = `https://api.weatherapi.com/v1${WeatherAPICalls.history.endpoint}?key=${API_KEY}&q=${city}&dt=${date}`;
-
-  // Month Extraction from the Query
-
-  // Date Extraction from the Query
-
-  return requiredData;
 };

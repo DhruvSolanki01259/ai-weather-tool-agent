@@ -1,13 +1,13 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getChatModel } from "@/modules/model/chat.model";
+import { QueryValidateSchema } from "@/lib/schema/query.schema";
+import { routeStrategy } from "@/modules/route/route.strategy";
+import { weatherAPIFlow } from "@/modules/weather/weather.api.flow";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { WeatherSystemPromptTemplate } from "@/lib/template/weather/weather.system.prompt.template";
 import { WeatherHumanPromptTemplate } from "@/lib/template/weather/weather.human.prompt.template";
 import { DirectSystemPromptTemplate } from "@/lib/template/direct/direct.system.prompt.template";
 import { DirectHumanPromptTemplate } from "@/lib/template/direct/direct.human.prompt.template";
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import { NextRequest, NextResponse } from "next/server";
-import { getWeatherData } from "@/modules/weather/weather.api";
-import { getChatModel } from "@/modules/model/chat.model";
-import { QueryValidateSchema } from "@/lib/schema/query.schema";
-import { getWeatherDetails } from "@/modules/weather/weather.details";
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -42,14 +42,13 @@ export const POST = async (request: NextRequest) => {
     const validateQuery = QueryValidateSchema.parse(query);
 
     // 3. Extract information from the input.
-    const weatherDetails = getWeatherDetails(validateQuery);
-    const weatherData = await getWeatherData("Mumbai");
+    const weatherData = await weatherAPIFlow(validateQuery);
 
     // 4. Decide the Path/Route.
-    const route = "direct";
+    const route = routeStrategy(validateQuery);
 
     // 5. Generate the Data/Content.
-    const model = getChatModel({ temperature: 0.3 });
+    const model = getChatModel({ temperature: 2 });
 
     if (route === "direct") {
       const DirectSystemPrompt = DirectSystemPromptTemplate();
@@ -66,14 +65,13 @@ export const POST = async (request: NextRequest) => {
           error: null,
           message: "Request sent Successfully.",
           response: response.content,
+          path: route,
         },
         { status: 200 },
       );
     } else {
-      const WeatherSystemPrompt = WeatherSystemPromptTemplate();
-      const WeatherHumanPrompt = WeatherHumanPromptTemplate(weatherData);
-
-      console.log(`Weather Path`);
+      const WeatherSystemPrompt = WeatherSystemPromptTemplate(weatherData);
+      const WeatherHumanPrompt = WeatherHumanPromptTemplate(validateQuery);
 
       const response = await model.invoke([
         new SystemMessage(WeatherSystemPrompt),
@@ -86,6 +84,7 @@ export const POST = async (request: NextRequest) => {
           error: null,
           message: "Request sent Successfully.",
           response: response.content,
+          path: route,
         },
         { status: 200 },
       );
@@ -93,16 +92,15 @@ export const POST = async (request: NextRequest) => {
 
     // 6. Structured JSON Format.
 
-    // return NextResponse.json(
-    //   {
-    //     success: false,
-    //     error: null,
-    //     message: "Request sent Successfully.",
-    //     response: response.content,
-    //     weatherData,
-    //   },
-    //   { status: 200 },
-    // );
+    return NextResponse.json(
+      {
+        success: true,
+        error: null,
+        message: "Request sent Successfully.",
+        weatherData,
+      },
+      { status: 200 },
+    );
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown Error Occured.";

@@ -1,4 +1,5 @@
 export const routeStrategy = (query: string): string => {
+  let route: string;
   const lowercaseQuery = query.toLowerCase();
 
   const weatherKeywords = [
@@ -12,8 +13,13 @@ export const routeStrategy = (query: string): string => {
     "cold",
     "degree",
   ];
-  const isWeatherQuery = 
+  const isWeatherQuery = weatherKeywords.some((keyword) =>
+    lowercaseQuery.includes(keyword),
+  );
 
-  const route = "";
+  if (!isWeatherQuery) {
+    route = "direct";
+  } else route = "weather";
+
   return route;
 };
