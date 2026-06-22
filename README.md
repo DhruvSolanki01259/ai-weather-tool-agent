@@ -62,6 +62,7 @@ Built using **Next.js, OpenAI API, Zod validation, and a custom tool-calling age
 
 ## 🧠 Example Output
 
+```json
 {
   "route": "weather",
   "status": "success",
@@ -70,12 +71,11 @@ Built using **Next.js, OpenAI API, Zod validation, and a custom tool-calling age
     "weather": {
       "city": "Mumbai",
       "temperature": 32,
-      "condition": "Cloudy",
-      "humidity": 70,
-      "windSpeed": 12
     }
   }
 }
+```
+
 🧩 Core Concepts
 Tool Calling in AI Agents
 Intent Detection / Routing Logic
@@ -98,6 +98,7 @@ Weather Query?
                   ↓
               Frontend UI
 🧾 Response Format
+```json
 {
   "route": "weather | chat",
   "status": "success | error",
@@ -112,6 +113,7 @@ Weather Query?
     }
   }
 }
+```
 🛠️ Run Locally
 git clone https://github.com/your-username/ai-weather-tool-agent
 cd ai-weather-tool-agent
