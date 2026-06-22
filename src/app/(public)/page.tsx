@@ -17,9 +17,9 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
-  const [showScrollBtn, setShowScrollBtn] = useState(false);
 
   const isDisabled = loading || !query.trim();
 
@@ -50,12 +50,12 @@ export default function Home() {
 
   const clearChat = () => setMessages([]);
 
-  // Auto scroll on new messages
+  // auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // Detect scroll position
+  // detect scroll position
   useEffect(() => {
     const handleScroll = () => {
       const atBottom =
@@ -74,18 +74,18 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-linear-to-b from-blue-50 via-white to-blue-50">
+    <div className="h-screen flex flex-col bg-gradient-to-b from-blue-50 via-white to-blue-50">
 
       {/* HEADER */}
       <header className="border-b bg-white/70 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
 
           <div>
-            <h1 className="text-sm font-semibold tracking-tight text-blue-900">
+            <h1 className="text-sm font-semibold text-blue-900">
               AI Query Engine
             </h1>
             <p className="text-[11px] text-muted-foreground">
-              Smart routing • Direct + Weather intelligence system
+              Smart routing • Direct + Weather AI system
             </p>
           </div>
 
@@ -116,9 +116,10 @@ export default function Home() {
                 </h2>
 
                 <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                  Structured AI system that intelligently routes queries into specialized pipelines.
+                  Structured AI system that routes queries into intelligent pipelines.
                 </p>
 
+                {/* FEATURES */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                   <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl shadow-sm">
                     ⚡ Fast structured responses
@@ -131,14 +132,70 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* SYSTEM NOTE */}
                 <div className="mt-6 p-4 rounded-xl border border-blue-100 bg-blue-50/40 text-[11px] text-muted-foreground max-w-md mx-auto">
                   <p className="font-medium text-blue-900 mb-1">
                     System Note
                   </p>
                   <p>
-                    Uses a hybrid system combining Weather API + LLM reasoning engine.
-                    Responses may vary depending on query clarity and routing behavior.
+                    Uses Weather API + LLM reasoning engine. Outputs depend on routing accuracy
+                    and query clarity.
                   </p>
+                </div>
+
+                {/* QUICK PROMPTS */}
+                <div className="mt-6 space-y-4 max-w-md mx-auto">
+
+                  <p className="text-xs text-muted-foreground">
+                    Try these examples:
+                  </p>
+
+                  {/* WEATHER */}
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-medium text-blue-700">
+                      🌦 Weather Queries
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {[
+                        "Weather in Mumbai",
+                        "Weather in Delhi tomorrow",
+                        "Is it raining in Pune?",
+                      ].map((q) => (
+                        <button
+                          key={q}
+                          onClick={() => setQuery(q)}
+                          className="text-[11px] px-3 py-1 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 transition"
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* GENERAL */}
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-medium text-gray-700">
+                      🧠 General Queries
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {[
+                        "Explain recursion in simple terms",
+                        "What is machine learning?",
+                        "How does React work?",
+                      ].map((q) => (
+                        <button
+                          key={q}
+                          onClick={() => setQuery(q)}
+                          className="text-[11px] px-3 py-1 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition"
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
@@ -147,6 +204,7 @@ export default function Home() {
 
           {/* CHAT */}
           <div className="space-y-4 py-6 pb-32">
+
             {messages.map((msg, i) => (
               <div key={i}>
 
@@ -167,6 +225,7 @@ export default function Home() {
                     )}
                   </div>
                 )}
+
               </div>
             ))}
 
@@ -176,13 +235,12 @@ export default function Home() {
               </div>
             )}
 
-            {/* scroll anchor */}
             <div ref={chatEndRef} />
           </div>
         </div>
       </main>
 
-      {/* FLOATING SCROLL BUTTON */}
+      {/* SCROLL BUTTON */}
       {showScrollBtn && (
         <button
           onClick={scrollToBottom}
