@@ -1,59 +1,103 @@
-🌦️ AI Weather Tool Agent
+# 🌦️ AI Weather Tool Agent
 
-🔗 Live Demo: https://ai-weather-tool-agent.vercel.app/
+An intelligent AI-powered agent that decides whether to respond directly using an LLM or fetch real-time weather data using an external API tool.
 
-📌 Overview
+Built using **Next.js, OpenAI API, Zod validation, and a custom tool-calling agent architecture.**
 
-AI Weather Tool Agent is an intelligent system that decides whether to respond directly using an LLM or fetch real-time weather data using an external API.
+🔗 **Live Demo:** https://ai-weather-tool-agent.vercel.app/
 
-It demonstrates how modern AI agents work internally using:
+---
 
-Routing (intent detection)
-Tool calling (API execution)
-Structured JSON responses
-Separation of reasoning vs execution
-🚀 Features
-🧠 Smart query routing (weather vs general chat)
-🌦️ Real-time weather data integration
-⚙️ Tool-based AI architecture
-📦 Structured JSON responses for UI rendering
-🎯 Clean separation of decision and execution logic
-💬 Dual response system (Chat + Weather)
+## ✨ Features
+
+- 🧠 Smart intent-based routing (weather vs general chat)
+- 🌦️ Real-time weather data fetching using external API
+- ⚙️ Tool-calling based AI agent architecture
+- 📦 Strict structured JSON responses for frontend rendering
+- 🎯 Separation of reasoning (LLM) and execution (tools)
+- 💬 Dual response system: Chat + Weather
+- ⚡ Fast and lightweight API-based backend flow
+- 🧾 Clean UI-ready response format
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- Tailwind CSS
+
+### Backend
+- Next.js API Routes
+- Custom AI Agent Layer (Router + Executor pattern)
+- Zod (Schema validation)
+
+### AI + Tools
+- OpenAI API (LLM reasoning)
+- Weather API (OpenWeather / WeatherAPI)
+- Axios (API requests)
+
+---
+
+## ⚙️ How It Works
+
+1. User sends a message from the frontend  
+2. API route receives the request  
+3. Router classifies intent (weather or chat)  
+
+### If weather-related:
+- Extract city + time
+- Call Weather API tool
+
+### If not weather-related:
+- LLM responds directly
+
+4. Response is formatted into strict JSON  
+5. Frontend renders UI dynamically:
+   - 🌦 Weather Card
+   - 💬 Chat Bubble
+
+---
+
+## 🧠 Example Output
+
+{
+  "route": "weather",
+  "status": "success",
+  "message": "Weather data fetched successfully",
+  "data": {
+    "weather": {
+      "city": "Mumbai",
+      "temperature": 32,
+      "condition": "Cloudy",
+      "humidity": 70,
+      "windSpeed": 12
+    }
+  }
+}
 🧩 Core Concepts
-
-This project is built to understand:
-
-Tool Calling in AI agents
-Intent Classification / Routing
-Structured Output Design (JSON Schema)
-LLM as a decision-making system
+Tool Calling in AI Agents
+Intent Detection / Routing Logic
+LLM vs Tool Execution Separation
+Structured Output Design (JSON schemas)
 API integration inside AI workflows
-Modular agent architecture
-🏗️ System Architecture
+Backend-driven AI architecture
+🔥 API Flow
 User Query
    ↓
 Router (Intent Detection)
    ↓
-Is Weather Related?
+Weather Query?
    ├── Yes → Weather Tool (API Call)
    └── No  → Direct LLM Response
                   ↓
-        Response Formatter (JSON)
+        Response Formatter (Zod Schema)
                   ↓
-         Final Structured Output
+         Final Structured JSON
                   ↓
               Frontend UI
-🔁 Workflow
-User sends a message from the frontend
-API route receives the request
-Router analyzes intent
-If weather-related → calls Weather API tool
-Otherwise → LLM generates response
-Response is formatted into structured JSON
-Frontend renders UI dynamically:
-🌦 Weather Card
-💬 Chat Bubble
-🧾 API Response Format
+🧾 Response Format
 {
   "route": "weather | chat",
   "status": "success | error",
@@ -62,59 +106,44 @@ Frontend renders UI dynamically:
     "weather": {
       "city": "Mumbai",
       "temperature": 32,
-      "condition": "Cloudy",
-      "humidity": 70,
-      "windSpeed": 12
     },
     "chat": {
-      "text": "General AI response here"
+      "text": "General AI response"
     }
   }
 }
-🌦️ Weather Tool
-Provider
-WeatherAPI.com (or OpenWeather API)
-Input
-{
-  "city": "Mumbai",
-  "date": "today | tomorrow | custom"
-}
-Output
-{
-  "temperature": 32,
-  "condition": "Cloudy",
-  "humidity": 70,
-  "windSpeed": 12
-}
-🧠 Routing Logic
-User Query	Action
-Weather in Mumbai tomorrow	🌦 Weather Tool
-Will it rain today?	🌦 Weather Tool
-What is monsoon?	💬 Chat (LLM)
-Explain climate change	💬 Chat (LLM)
-🖥️ Frontend UI
+🛠️ Run Locally
+git clone https://github.com/your-username/ai-weather-tool-agent
+cd ai-weather-tool-agent
 
-The UI dynamically renders based on response type:
+npm install
+npm run dev
+🔐 Environment Variables
 
-Components
-💬 Chat Input Box
-⏳ Loading State (Thinking / Fetching data)
-🌦 Weather Card
-💬 Chat Bubble
-⚙️ Tech Stack
-Next.js (App Router)
-TypeScript
-OpenAI API
-Axios
-Zod (Schema Validation)
-Weather API
-📚 Learning Outcomes
+Create a .env file:
 
-This project helps you understand:
+OPENAI_API_KEY=your_key
+GEMINI_API_KEY=your_key
+GROQ_API_KEY=your_key
+WEATHER_API_KEY=your_key
+🚀 Future Improvements
+🌍 Add multiple tools (news, calculator, time)
+🧠 Memory-based conversations
+🔗 Multi-step tool chaining
+⚡ Streaming responses (ChatGPT-like UX)
+🧩 LangGraph-style agent orchestration
+📊 Smarter routing using LLM classifiers
+📌 Why This Project Stands Out
 
-How real AI agents are structured
-Tool calling architecture
-Routing before LLM execution
-Structured JSON design for frontend systems
-API integration inside AI workflows
-Separation of decision-making vs execution
+This project demonstrates:
+
+Real-world AI agent architecture
+Tool-calling system design (Router → Tool → Formatter)
+Clean separation of reasoning vs execution
+Production-style structured JSON APIs
+Practical understanding of modern LLM workflows
+Scalable backend AI design patterns
+⭐ If You Like This Project
+
+Give it a star and explore the live demo:
+👉 https://ai-weather-tool-agent.vercel.app/
