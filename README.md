@@ -2,50 +2,58 @@
 
 🔗 Live Demo: https://ai-weather-tool-agent.vercel.app/
 
-An AI-powered agent that intelligently decides whether to answer directly or fetch real-time weather data using a tool (Weather API). Built with Next.js, this project demonstrates core concepts of modern AI systems like routing, tool calling, and structured JSON outputs.
+📌 Overview
 
+AI Weather Tool Agent is an intelligent system that decides whether to respond directly using an LLM or fetch real-time weather data using an external API.
+
+It demonstrates how modern AI agents work internally using:
+
+Routing (intent detection)
+Tool calling (API execution)
+Structured JSON responses
+Separation of reasoning vs execution
 🚀 Features
-🧠 Intelligent query routing (weather vs general chat)
-🌦️ Real-time weather data fetching using external API
-⚙️ Tool-based architecture (agent decides when to call APIs)
-📦 Structured JSON responses for frontend rendering
-🎯 Separation of decision-making and execution
-💬 Dual-mode responses: Weather + Chat
+🧠 Smart query routing (weather vs general chat)
+🌦️ Real-time weather data integration
+⚙️ Tool-based AI architecture
+📦 Structured JSON responses for UI rendering
+🎯 Clean separation of decision and execution logic
+💬 Dual response system (Chat + Weather)
 🧩 Core Concepts
 
-This project demonstrates:
+This project is built to understand:
 
 Tool Calling in AI agents
-Routing / Intent classification
-Structured Output (JSON schema design)
-LLM as a decision maker
+Intent Classification / Routing
+Structured Output Design (JSON Schema)
+LLM as a decision-making system
 API integration inside AI workflows
-Separation of concerns in agent architecture
+Modular agent architecture
 🏗️ System Architecture
 User Query
    ↓
 Router (Intent Detection)
    ↓
-Weather Query? ─────── Yes ───────→ Weather Tool (API Call)
-   ↓                                   ↓
-No                                    Weather Data
-   ↓                                   ↓
-LLM Direct Answer              Response Formatter
-   ↓                                   ↓
-        Final Structured JSON Response
+Is Weather Related?
+   ├── Yes → Weather Tool (API Call)
+   └── No  → Direct LLM Response
+                  ↓
+        Response Formatter (JSON)
+                  ↓
+         Final Structured Output
+                  ↓
+              Frontend UI
 🔁 Workflow
-User sends a message from frontend UI
+User sends a message from the frontend
 API route receives the request
-Router classifies intent:
-Weather-related → calls weather tool
-Otherwise → direct LLM response
-Weather API is called when required
-LLM formats final structured response
-JSON is returned to frontend
-UI renders:
+Router analyzes intent
+If weather-related → calls Weather API tool
+Otherwise → LLM generates response
+Response is formatted into structured JSON
+Frontend renders UI dynamically:
 🌦 Weather Card
 💬 Chat Bubble
-🧾 Response Format
+🧾 API Response Format
 {
   "route": "weather | chat",
   "status": "success | error",
@@ -54,6 +62,9 @@ UI renders:
     "weather": {
       "city": "Mumbai",
       "temperature": 32,
+      "condition": "Cloudy",
+      "humidity": 70,
+      "windSpeed": 12
     },
     "chat": {
       "text": "General AI response here"
@@ -61,47 +72,49 @@ UI renders:
   }
 }
 🌦️ Weather Tool
-
-Uses external APIs like:
-WeatherAPI.com
-
-Input:
+Provider
+WeatherAPI.com (or OpenWeather API)
+Input
 {
   "city": "Mumbai",
-  "date": "2026-06-22" 
+  "date": "today | tomorrow | custom"
 }
-
-Output:
+Output
 {
   "temperature": 32,
   "condition": "Cloudy",
+  "humidity": 70,
+  "windSpeed": 12
 }
-
 🧠 Routing Logic
 User Query	Action
-"Weather in Mumbai tomorrow"	🌦 Weather Tool
-"Will it rain today?"	🌦 Weather Tool
-"What is monsoon?"	💬 Chat
-"Explain climate change"	💬 Chat
+Weather in Mumbai tomorrow	🌦 Weather Tool
+Will it rain today?	🌦 Weather Tool
+What is monsoon?	💬 Chat (LLM)
+Explain climate change	💬 Chat (LLM)
 🖥️ Frontend UI
-💬 Chat input box
-⏳ Loading state (thinking / fetching weather)
-🌦 Weather card (dynamic rendering)
-💬 Chat message UI
 
-UI changes dynamically based on route.
+The UI dynamically renders based on response type:
 
+Components
+💬 Chat Input Box
+⏳ Loading State (Thinking / Fetching data)
+🌦 Weather Card
+💬 Chat Bubble
 ⚙️ Tech Stack
 Next.js (App Router)
 TypeScript
 OpenAI API
 Axios
-Zod (schema validation)
-Weather API (OpenWeather / WeatherAPI)
+Zod (Schema Validation)
+Weather API
 📚 Learning Outcomes
-How AI agents are structured in production
+
+This project helps you understand:
+
+How real AI agents are structured
 Tool calling architecture
-Routing systems in LLM applications
-Structured JSON design for UI
+Routing before LLM execution
+Structured JSON design for frontend systems
 API integration inside AI workflows
-Separation of decision vs execution logic
+Separation of decision-making vs execution
